@@ -27,8 +27,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Prepare macOS icon
+        run: sips -z 512 512 build/xavi-icon.png --out build/xavi-icon-mac.png
+
       - name: Build universal macOS DMG
-        run: npm run build:mac -- --universal
+        run: |
+          npm pkg set build.mac.icon=build/xavi-icon-mac.png
+          npm run build:mac -- --universal
 
       - name: Upload DMG
         uses: actions/upload-artifact@v4
