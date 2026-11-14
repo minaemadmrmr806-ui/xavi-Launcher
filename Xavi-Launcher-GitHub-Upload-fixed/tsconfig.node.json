@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "lib": ["ES2023", "DOM"],
+    "rootDir": "src",
+    "outDir": "dist-electron",
+    "erasableSyntaxOnly": true
+  },
+  "include": ["src/main", "src/shared"],
+  "exclude": ["src/main/preload.ts"]
+}
