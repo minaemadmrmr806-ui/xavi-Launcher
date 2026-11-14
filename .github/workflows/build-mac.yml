@@ -1,4 +1,4 @@
-name: Build macOS installer
+name: Build macOS installers
 
 on:
   workflow_dispatch:
@@ -12,7 +12,12 @@ defaults:
 
 jobs:
   macos:
+    name: Build macOS ${{ matrix.arch }} installer
     runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [arm64, x64]
     steps:
       - name: Check out project
         uses: actions/checkout@v4
@@ -30,14 +35,14 @@ jobs:
       - name: Prepare macOS icon
         run: sips -z 512 512 build/xavi-icon.png --out build/xavi-icon-mac.png
 
-      - name: Build universal macOS DMG
+      - name: Build macOS DMG
         run: |
           npm pkg set build.mac.icon=build/xavi-icon-mac.png
-          npm run build:mac -- --universal
+          npm run build:mac -- --${{ matrix.arch }}
 
       - name: Upload DMG
         uses: actions/upload-artifact@v4
         with:
-          name: xavi-launcher-macos
+          name: xavi-launcher-macos-${{ matrix.arch }}
           path: Xavi-Launcher-GitHub-Upload-fixed/dist/*.dmg
           if-no-files-found: error
